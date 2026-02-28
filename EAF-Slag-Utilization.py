@@ -6,7 +6,7 @@ st.set_page_config(
     layout="wide",
 )
 
-st.title("♻️ EAF Slag Utilization Decision Tool — (EU/Germany-focused screening)")
+st.title("U+267B EAF Slag Utilization Decision Tool — (EU/Germany-focused screening)")
 st.caption(
     "Rule-based, no dataset required. Uses slag chemistry + EU-style environmental screening flags to rank recycling routes.\n\n"
     "Important: This app uses **screening thresholds** (Green/Amber/Red). "
@@ -414,6 +414,7 @@ with right:
         st.caption("Paste your regulation/standard links in the sidebar if you want the app to display them here.")
 
 st.divider()
+
 
 
 
