@@ -33,7 +33,7 @@ with st.sidebar:
 
     st.subheader("Trace metals (total content)")
     cr_wt = st.number_input("Chromium (Cr) total (wt%)", min_value=0.0, max_value=10.0, value=0.8, step=0.1)
-    pb_wt = st.number_input("Lead (Pb) total (mg/kg)", min_value=0.0, max_value=5000.0, value=150.0, step=10.0)
+    pb_wt = st.number_input("Lead (Pb) total (wt%)", min_value=0.0, max_value=5000.0, value=150.0, step=10.0)
     zn_wt = st.number_input("Zinc (Zn) total (wt%)", min_value=0.0, max_value=10.0, value=0.6, step=0.1)
 
     st.subheader("Locally available facilities")
@@ -437,3 +437,4 @@ with right:
         st.caption("Paste your regulation/standard links in the sidebar if you want the app to display them here.")
 
 st.divider()
+
