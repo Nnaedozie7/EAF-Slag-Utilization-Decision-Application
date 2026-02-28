@@ -1,10 +1,10 @@
 # ♻️ EAF Slag Utilization Decision Tool — (EU/Germany-focused)
 
-A rule-based Streamlit app (no dataset required) to rank recycling/valorization routes for EAF slag using:
+A rule based Streamlit app (no dataset required) to rank recycling/valorization routes for EAF slag using:
 - Metallurgical suitability inputs
 - EU/Germany-style environmental screening flags (Green/Amber/Red)
 
-> **Note:** This is a screening/decision-support tool. For real compliance decisions, use appropriate leaching tests and the legally applicable German/EU rules and guidance.
+> **Note:** This is a screening/decision support tool. For real compliance decisions, use appropriate leaching tests and the legally applicable German/EU rules and guidance.
 
 ---
 
