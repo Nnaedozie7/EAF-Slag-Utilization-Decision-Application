@@ -14,9 +14,7 @@ st.caption(
     "Defaults here are **illustrative placeholders** for teaching/portfolio use."
 )
 
-# -----------------------------
-# Sidebar inputs
-# -----------------------------
+
 with st.sidebar:
     st.header("Inputs")
 
@@ -51,8 +49,6 @@ with st.sidebar:
         help="For thesis/real use, set thresholds from ErsatzbaustoffV/DepV or your chosen German guidance.",
     )
 
-    # Illustrative placeholders — user editable when they choose custom.
-    # We intentionally do NOT claim these are legal limits.
     default_thr = {
         "Cr_wt_green": 0.5,
         "Cr_wt_amber": 1.5,
@@ -89,9 +85,7 @@ with st.sidebar:
     src_depv = st.text_input("DepV link (optional)", value="")
     src_state = st.text_input("State guidance / technical rules link (optional)", value="")
 
-# -----------------------------
-# Screening logic: Green / Amber / Red
-# -----------------------------
+
 def flag_level(value, green, amber):
     """Return (level, score_penalty, label) where level in {'Green','Amber','Red'}.
        Penalty is used to reduce reuse route scores when risk increases."""
@@ -105,7 +99,7 @@ cr_level, cr_penalty, cr_label = flag_level(cr_wt, cr_wt_green, cr_wt_amber)
 pb_level, pb_penalty, pb_label = flag_level(pb_wt, pb_wt_green, pb_wt_amber)
 zn_level, zn_penalty, zn_label = flag_level(zn_wt, zn_wt_green, zn_wt_amber)
 
-# Overall environmental screening (simple)
+
 pen_sum = cr_penalty + pb_penalty + zn_penalty
 if pen_sum <= 2:
     env_overall = "Low"
@@ -117,7 +111,6 @@ else:
     env_overall = "High"
     env_badge = "🔴 High"
 
-# Metallurgical / processing actions
 actions = []
 if free_cao_risk == "High":
     actions.append("Aging/conditioning is strongly recommended to control expansion (free CaO/MgO).")
@@ -127,7 +120,6 @@ elif free_cao_risk == "Medium":
 else:
     actions.append("Low expansion risk assumed; standard QA checks still recommended.")
 
-# FeO hint (metal recovery potential proxy)
 if feo_pct >= 25:
     actions.append("FeO is relatively high → metal recovery / beneficiation may be attractive (site-specific).")
 elif feo_pct >= 15:
@@ -135,7 +127,6 @@ elif feo_pct >= 15:
 else:
     actions.append("Low FeO → metal recovery may be less attractive unless metallic Fe is significant.")
 
-# Basicity hint (cement/reactivity proxy)
 if basicity >= 2.2:
     actions.append("Higher basicity can support binder/aggregate performance but requires stability and compliance testing.")
 elif basicity >= 1.6:
@@ -143,12 +134,9 @@ elif basicity >= 1.6:
 else:
     actions.append("Low basicity; reuse may still be possible but may require blending/conditioning for target application.")
 
-# Always recommend EU-style tests (tilt toward recycling with QA)
 actions.append("Perform EU/Germany-relevant leaching & compliance testing before unrestricted reuse (especially if Amber/Red flags).")
 
-# -----------------------------
-# Route scoring (tilt toward recycling; landfill is last resort)
-# -----------------------------
+
 def base_availability_score(available: bool) -> int:
     return 4 if available else -8
 
@@ -159,7 +147,7 @@ def route_score_road():
     score += base_availability_score(road_outlet)
     why.append("Road/aggregate outlet is available." if road_outlet else "No road/aggregate outlet available (major barrier).")
 
-    # Metallurgical suitability
+    
     if free_cao_risk == "High":
         score -= 4
         why.append("High free CaO risk penalizes road use unless conditioning/aging is applied.")
@@ -170,7 +158,7 @@ def route_score_road():
         score += 2
         why.append("Low expansion risk supports aggregate use (with QA).")
 
-    # Environmental screening (road is sensitive but often feasible under controlled use)
+   
     score -= (cr_penalty + pb_penalty + zn_penalty) * 0.6
     if env_overall == "High":
         why.append("Environmental screening is HIGH → road use likely restricted unless encapsulated/controlled and proven by leaching tests.")
@@ -179,7 +167,6 @@ def route_score_road():
     else:
         why.append("Environmental screening is LOW → fewer environmental constraints expected (still test).")
 
-    # Recycling tilt bonus if not Red-heavy
     if env_overall in ["Low", "Medium"]:
         score += 2
         why.append("Recycling preference: road/aggregate route favored when compliance risk is not severe.")
@@ -193,7 +180,7 @@ def route_score_cement():
     score += base_availability_score(cement_outlet)
     why.append("Cement/binder outlet is available." if cement_outlet else "No cement/binder outlet available (major barrier).")
 
-    # Metallurgical suitability
+    
     if free_cao_risk == "High":
         score -= 3
         why.append("High free CaO risk penalizes direct cement/binder use without conditioning.")
@@ -213,7 +200,6 @@ def route_score_cement():
         score -= 1
         why.append("Low basicity slightly penalizes binder route unless blended/engineered.")
 
-    # Environmental screening: cement can act as encapsulation in some cases, so treat as slightly more tolerant than road
     score -= (cr_penalty + pb_penalty + zn_penalty) * 0.45
     if env_overall == "High":
         why.append("Environmental screening HIGH: cement/encapsulation might still be possible but requires strict QA + compliance proof.")
@@ -236,7 +222,6 @@ def route_score_metal_recovery():
     score += base_availability_score(metal_recovery_outlet)
     why.append("Metal recovery facility is available." if metal_recovery_outlet else "No metal recovery facility available (major barrier).")
 
-    # FeO proxy for recoverable value
     if feo_pct >= 25:
         score += 4
         why.append("High FeO suggests higher potential value from beneficiation/metal recovery (site-specific).")
@@ -247,14 +232,12 @@ def route_score_metal_recovery():
         score += 0
         why.append("Low FeO: metal recovery value may be limited unless metallic Fe content is high.")
 
-    # Environmental screening: generally less restrictive because route is internal processing, not direct placement
     score -= (cr_penalty + pb_penalty + zn_penalty) * 0.2
     if env_overall == "High":
         why.append("Environmental screening HIGH: metal recovery remains useful as a pre-treatment before final outlet selection.")
     else:
         why.append("Environmental screening not severe: metal recovery can improve overall circularity and reduce landfill need.")
 
-    # Recycling tilt: strongly encourage metal recovery as a pre-route when available
     score += 2 if metal_recovery_outlet else 0
     why.append("Recycling preference: metal recovery is recommended as a first step when available.")
 
@@ -267,11 +250,9 @@ def route_score_landfill():
     score += (2 if landfill_outlet else -10)
     why.append("Landfill option available." if landfill_outlet else "No landfill option available (constraint).")
 
-    # Landfill should generally be last resort. Penalize by default.
     score -= 4
     why.append("Landfill is treated as a last-resort option (circularity preference).")
 
-    # If environmental screening is high, landfill becomes more likely
     if env_overall == "High":
         score += 8
         why.append("Environmental screening HIGH: disposal/controlled landfill may be necessary if reuse cannot meet compliance.")
@@ -282,7 +263,6 @@ def route_score_landfill():
         score -= 1
         why.append("Environmental screening LOW: reuse routes should usually be prioritized over landfill.")
 
-    # If no recycling outlets exist, landfill rises
     if (not road_outlet) and (not cement_outlet) and (not metal_recovery_outlet):
         score += 8
         why.append("No valorization infrastructure selected → landfill becomes practical fallback.")
@@ -362,9 +342,6 @@ routes.append({
 
 routes_sorted = sorted(routes, key=lambda r: r["Score"], reverse=True)
 
-# -----------------------------
-# Main UI
-# -----------------------------
 st.subheader("EU-style screening summary (from your trace-metal inputs)")
 k1, k2, k3, k4 = st.columns(4)
 k1.metric("Chromium (Cr)", cr_label)
@@ -437,4 +414,5 @@ with right:
         st.caption("Paste your regulation/standard links in the sidebar if you want the app to display them here.")
 
 st.divider()
+
 
