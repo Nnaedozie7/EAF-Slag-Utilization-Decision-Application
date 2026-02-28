@@ -2,7 +2,7 @@ import streamlit as st
 
 st.set_page_config(
     page_title="EAF Slag Utilization Decision Tool ( EU-focused)",
-    page_icon="♻️",
+    page_icon="U+267B",
     layout="wide",
 )
 
@@ -414,5 +414,6 @@ with right:
         st.caption("Paste your regulation/standard links in the sidebar if you want the app to display them here.")
 
 st.divider()
+
 
 
