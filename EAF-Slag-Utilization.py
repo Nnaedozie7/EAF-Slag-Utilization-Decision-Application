@@ -2,11 +2,11 @@ import streamlit as st
 
 st.set_page_config(
     page_title="EAF Slag Utilization Decision Tool ( EU-focused)",
-    page_icon="U+267B",
+    page_icon="♻️",
     layout="wide",
 )
 
-st.title("U+267B EAF Slag Utilization Decision Tool — (EU/Germany-focused screening)")
+st.title("♻️ EAF Slag Utilization Decision Tool — (EU/Germany-focused screening)")
 st.caption(
     "Rule-based, no dataset required. Uses slag chemistry + EU-style environmental screening flags to rank recycling routes.\n\n"
     "Important: This app uses **screening thresholds** (Green/Amber/Red). "
@@ -31,7 +31,7 @@ with st.sidebar:
 
     st.subheader("Trace metals (total content)")
     cr_wt = st.number_input("Chromium (Cr) total (wt%)", min_value=0.0, max_value=10.0, value=0.8, step=0.1)
-    pb_wt = st.number_input("Lead (Pb) total (wt%)", min_value=0.0, max_value=5000.0, value=150.0, step=10.0)
+    pb_wt = st.number_input("Lead (Pb) total (wt%)", min_value=0.0, max_value=5000.0, value=150.0, step=10.0, format="%.3f)
     zn_wt = st.number_input("Zinc (Zn) total (wt%)", min_value=0.0, max_value=10.0, value=0.6, step=0.1)
 
     st.subheader("Locally available facilities")
@@ -208,7 +208,7 @@ def route_score_cement():
     else:
         why.append("Environmental screening LOW: cement route likely feasible subject to product standards/testing.")
 
-    # Recycling tilt bonus if not severe
+    
     if env_overall in ["Low", "Medium"]:
         score += 2
         why.append("Recycling preference: cement/encapsulation favored when compliance risk is not severe.")
