@@ -38,8 +38,8 @@ Typical composition:
 
 | Component | Typical Range |
 |--------|--------|
-| CaO | 35 – 45 % |
-| SiO₂ | 10 – 20 % |
+| CaO | 25 – 45 % |
+| SiO₂ | 10 – 25 % |
 | FeO | 10 – 30 % |
 | MgO | 5 – 10 % |
 
@@ -137,11 +137,12 @@ The application includes:
 
 The interface is implemented using **Streamlit**.
 
----
+##References
 
-## How to Run
-
-Install dependencies:
-
-```bash
-pip install streamlit
+- Verordnung über Anforderungen an den Einbau von mineralischen Ersatzbaustoffen in technische Bauwerke (Ersatzbaustoffverordnung - ErsatzbaustoffV)
+- Verordnung über Deponien und Langzeitlager  (Deponieverordnung – DepV) Vom 27. April 2009, BGBl. I S. 900
+- Directive 2008/98/EC of the European Parliament and of the Council of 19 November 2008 on waste and repealing certain Directives.https://eurlex.europa.eu/eli/dir/2008/98/oj
+-  Electric arc furnace slag as natural aggregate replacement in concrete production. Saveria Monosi, Maria Letizia Ruello*, Daniela Sani.
+- The potential of industrial waste: Electric arc furnace slag (EAF) as recycled road construction materials. Patimapon Sukmak a, Gampanart Sukmak a, Pre DeSilva b, Suksun Horpibulsuk.
+- A critical analysis of electric arc furnace (EAF) slag for sustainable geopolymer concrete production. Kamal Kishore , M. Neaz Sheikh , Muhammad N.S. Hadi
+- Heavy metal recovery from electric arc furnace steel slag by using hydrochloric acid leaching. Lim Jin Wei1, 2 , Ong Teng Haan1, Thomas Choong Shean Yaw2, Luqman Chuah
