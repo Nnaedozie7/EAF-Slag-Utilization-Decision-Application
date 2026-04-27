@@ -87,8 +87,7 @@ with st.sidebar:
 
 
 def flag_level(value, green, amber):
-    """Return (level, score_penalty, label) where level in {'Green','Amber','Red'}.
-       Penalty is used to reduce reuse route scores when risk increases."""
+   
     if value <= green:
         return "Green", 0, "🟢 Green"
     if value <= amber:
